@@ -1,5 +1,6 @@
 from typing import Iterable, List, Optional, Any
 import pair
+import list as linked_list
 
 Node = pair.Pair[Any, int]
 Stack = Optional[pair.Pair[Node, "Stack"]]  # type: ignore
@@ -8,35 +9,27 @@ empty: Stack = None
 
 
 def len(stack: Stack) -> int:
-    if stack is None:
-        return 0
-    return pair.snd(pair.fst(stack))
+    return linked_list.len(stack)
 
 
 def is_empty(stack: Stack) -> bool:
-    return stack is None
+    return linked_list.is_empty(stack)
 
 
 def push(head: Any, stack: Stack) -> Stack:
-    return pair.mk_pair(pair.mk_pair(head, len(stack) + 1), stack)
+    return linked_list.cons(head, stack)
 
 
 def peek(stack: Stack) -> Optional[Any]:
-    if stack is None:
-        return None
-    return pair.fst(pair.fst(stack))
+    return linked_list.head(stack)
 
 
 def pop(stack: Stack) -> Stack:
-    if stack is None:
-        return None
-    return pair.snd(stack)
+    return linked_list.tail(stack)
 
 
 def iter(stack: Stack) -> Iterable[Any]:
-    while stack is not None:
-        yield peek(stack)
-        stack = pop(stack)
+    yield from linked_list.iter(stack)
 
 
 def to_list(stack: Stack) -> List[Any]:
@@ -44,10 +37,7 @@ def to_list(stack: Stack) -> List[Any]:
 
 
 def from_iter(items: Iterable[Any]) -> Stack:
-    ret = empty
-    for item in items:
-        ret = push(item, ret)
-    return ret
+    return linked_list.from_iter(items)
 
 
 if __name__ == "__main__":
